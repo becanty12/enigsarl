@@ -25,16 +25,15 @@ class Categorie
     private $libelle;
 
     /**
-     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="categories")
+     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="categorie")
      */
     private $produits;
+
 
     public function __construct()
     {
         $this->produits = new ArrayCollection();
     }
-
-
 
     public function getId(): ?int
     {
@@ -65,7 +64,7 @@ class Categorie
     {
         if (!$this->produits->contains($produit)) {
             $this->produits[] = $produit;
-            $produit->setCategories($this);
+            $produit->setCategorie($this);
         }
 
         return $this;
@@ -75,13 +74,15 @@ class Categorie
     {
         if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
-            if ($produit->getCategories() === $this) {
-                $produit->setCategories(null);
+            if ($produit->getCategorie() === $this) {
+                $produit->setCategorie(null);
             }
         }
 
         return $this;
     }
+
+   
 
 
 }

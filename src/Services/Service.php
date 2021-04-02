@@ -43,6 +43,7 @@ class Service {
     public  function affichage_titre(){
 
         $strs = str_replace('_', ' ', $this->route);
+        //dd($strs);
         return $strs;
 
     }

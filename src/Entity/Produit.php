@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,10 +36,19 @@ class Produit
      */
     private $images;
 
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Ajouter une image jpg")
+     * @Assert\File(mimeTypes={ "image/png" })
+     */
+    private $image_prod;
+
     /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produits")
      */
-    private $categories;
+    private $categorie;
 
     public function __construct()
     {
@@ -75,8 +85,6 @@ class Produit
         return $this;
     }
 
-
-
     /**
      * @return Collection|Image[]
      */
@@ -107,14 +115,27 @@ class Produit
         return $this;
     }
 
-    public function getCategories(): ?Categorie
+
+    public function getImageProd(): ?string
     {
-        return $this->categories;
+        return $this->image_prod;
     }
 
-    public function setCategories(?Categorie $categories): self
+    public function setImageProd(string $image_prod): self
     {
-        $this->categories = $categories;
+        $this->image_prod = $image_prod;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }
