@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Commune;
+use App\Entity\Post;
 use App\Entity\Produit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,12 +15,11 @@ class TransmissionController extends AbstractController
      */
     public function index(): Response
     {
-        $em =$this->getDoctrine()->getManager();
-
-        $commune = $em->getRepository(Produit::class)->findOneBy(['id'=>1]);
-//dd($commune);
+      $em =$this->getDoctrine()->getManager();
+      $rest=$em->getRepository(Post::class)->findBy(['title'=>'konate']);
+//dd($rest);
         return $this->render('transmission/index.html.twig', [
-          'commune'=>$commune
+          'commune'=>$rest
         ]);
-    }
+        }      
 }

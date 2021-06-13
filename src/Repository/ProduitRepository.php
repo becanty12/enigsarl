@@ -18,7 +18,20 @@ class ProduitRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Produit::class);
     }
-
+    public function affiche_produit_all()
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = "
+            SELECT p.libelle as titre,p.id,p.date_ajout,c.libelle
+            FROM produit p
+            left JOIN categorie as c on p.categorie_id=c.id
+           
+            ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
     // /**
     //  * @return Produit[] Returns an array of Produit objects
     //  */

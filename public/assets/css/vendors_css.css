@@ -12,7 +12,7 @@
 @import url(../../assets/vendor_components/bootstrap-select/dist/css/bootstrap-select.css);
 @import url(../../assets/vendor_plugins/timepicker/bootstrap-timepicker.min.css);
 @import url(../../assets/vendor_components/fullcalendar/fullcalendar.min.css);
-@import "../../assets/vendor_components/fullcalendar/fullcalendar.print.min.css" print;
+@import url(../../assets/vendor_components/fullcalendar/fullcalendar.min.css) print;
 @import url(../../assets/vendor_components/aos/aos.css);
 @import url(../../assets/vendor_components/datatable/datatables.min.css);
 /* Menus core CSS */

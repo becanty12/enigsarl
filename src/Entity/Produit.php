@@ -32,28 +32,26 @@ class Produit
 
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="produit")
-     */
-    private $images;
-
-
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank(message="Ajouter une image jpg")
-     * @Assert\File(mimeTypes={ "image/png" })
-     */
-    private $image_prod;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produits")
      */
     private $categorie;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="produit",cascade={"persist"})
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-        $this->images = new ArrayCollection();
+        $this->image = new ArrayCollection();
+        $this->date_ajout=  new \DateTime('now');
+
     }
 
     public function getId(): ?int
@@ -85,18 +83,32 @@ class Produit
         return $this;
     }
 
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Image[]
      */
-    public function getImages(): Collection
+    public function getImage(): Collection
     {
-        return $this->images;
+        return $this->image;
     }
 
     public function addImage(Image $image): self
     {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
+        if (!$this->image->contains($image)) {
+            $this->image[] = $image;
             $image->setProduit($this);
         }
 
@@ -105,7 +117,7 @@ class Produit
 
     public function removeImage(Image $image): self
     {
-        if ($this->images->removeElement($image)) {
+        if ($this->image->removeElement($image)) {
             // set the owning side to null (unless already changed)
             if ($image->getProduit() === $this) {
                 $image->setProduit(null);
@@ -115,27 +127,14 @@ class Produit
         return $this;
     }
 
-
-    public function getImageProd(): ?string
+    public function getDescription(): ?string
     {
-        return $this->image_prod;
+        return $this->description;
     }
 
-    public function setImageProd(string $image_prod): self
+    public function setDescription(string $description): self
     {
-        $this->image_prod = $image_prod;
-
-        return $this;
-    }
-
-    public function getCategorie(): ?Categorie
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(?Categorie $categorie): self
-    {
-        $this->categorie = $categorie;
+        $this->description = $description;
 
         return $this;
     }

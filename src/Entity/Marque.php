@@ -6,6 +6,7 @@ use App\Repository\MarqueRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * il sagit de la table partenaire a revoir le nom TODO
  * @ORM\Entity(repositoryClass=MarqueRepository::class)
  */
 class Marque

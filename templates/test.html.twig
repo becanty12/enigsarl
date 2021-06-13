@@ -1,0 +1,79 @@
+{% extends '_includes/index.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block page_content %}
+    <section class="py-30">
+
+    </section>
+    <section class="pb-50">
+        <div class="container">
+            <div class="row">
+               <div class="table-responsive">
+    <table class="table table-bordered" id="table_perm">
+        <thead>
+            <th>Permission</th>
+            <th>Read</th>
+            <th>Create</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Product</td>
+                <td><input type="checkbox" class="" name="r[]"/></td></td>
+                <td><input type="checkbox" class="" name="c[]"/></td></td>
+                <td><input type="checkbox" class="" name="e[]"/></td></td>
+                <td><input type="checkbox" class="" name="d[]"/></td></td>
+            </tr>
+            <tr>
+                <td>Invoice</td>
+                <td><input type="checkbox" class="big-checkbox" name="r[]"/></td></td>
+                <td><input type="checkbox" class="big-checkbox" name="c[]"/></td></td>
+                <td><input type="checkbox" class="big-checkbox" name="e[]"/></td></td>
+                <td><input type="checkbox" class="big-checkbox" name="d[]"/></td></td>
+            </tr>
+            <tr>
+                <td>Quotation</td>
+                <td><input type="checkbox" class="big-checkbox" name="r[]"/></td></td>
+                <td><input type="checkbox" class="big-checkbox" name="c[]"/></td></td>
+                <td><input type="checkbox" class="big-checkbox" name="e[]"/></td></td>
+                <td><input type="checkbox" class="big-checkbox" name="d[]"/></td></td>
+            </tr>
+            <tr>
+                <td>Banking</td>
+                <td><input type="checkbox" class="big-checkbox" name="r[]"/></td></td>
+                <td><input type="checkbox" class="big-checkbox" name="c[]"/></td></td>
+                <td><input type="checkbox" class="big-checkbox" name="e[]"/></td></td>
+                <td><input type="checkbox" class="big-checkbox" name="d[]"/></td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<button type="button" class="btn btn-primary" id="btnUpdPermission">Save</button>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+    var myPermissions = {};
+
+    $('#table_perm tbody tr').each(function() {
+
+    var sectionId = $(this).data('id');
+    console.log("=================="+sectionId);
+    var sectionPermissions = [];
+
+    $(this).find('input.big-checkbox:checked').each(function() {
+        sectionPermissions.push($(this).attr('name').charAt(0));
+    });
+
+    myPermissions[sectionId] = sectionPermissions.join(',');
+
+});
+    </script>
+{% endblock %}

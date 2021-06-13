@@ -19,6 +19,52 @@ class CategorieRepository extends ServiceEntityRepository
         parent::__construct($registry, Categorie::class);
     }
 
+    public function affiche_produit($id)
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = "
+            SELECT *
+            FROM produit p
+            INNER JOIN image as i on i.produit_id=p.id
+            WHERE p.`categorie_id`=:id 
+           
+            ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(array('id' => $id));
+        return $stmt->fetchAll();
+    }
+
+    public function affiche_produit_One($id)
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = "
+            SELECT *
+            FROM produit p
+            INNER JOIN image as i on i.produit_id=p.id
+            WHERE p.id=:id 
+           
+            ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(array('id' => $id));
+        return $stmt->fetchAll();
+    }
+
+    public function listeCategorie()
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = "
+            SELECT c.`libelle`,c.`status`,c.`description`,p.`libelle`
+            FROM `categorie` AS c 
+            left JOIN `produit` AS p ON p.`categorie_id`=c.`id`
+            GROUP BY c.`libelle`
+            ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
     // /**
     //  * @return Categorie[] Returns an array of Categorie objects
     //  */
