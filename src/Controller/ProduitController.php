@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Categorie;
 use App\Entity\Produit;
-use App\Form\CategorieType;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,8 +24,8 @@ class ProduitController extends AbstractController
      */
     public function index(ProduitRepository $produitRepository): Response
     {
-        $listeproduit=$produitRepository->affiche_produit_all();//$this->getDoctrine()->getRepository(Produit::class)->findAll();
-//dd($listeproduit);
+        $listeproduit = $produitRepository->affiche_produit_all(); //$this->getDoctrine()->getRepository(Produit::class)->findAll();
+        //dd($listeproduit);
         return $this->render('produit/index.html.twig', [
             'titre' => 'Liste des produits',
             'listeproduit' => $listeproduit,
@@ -48,17 +47,17 @@ class ProduitController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
-            $brochureFile = $form->get('image')->getData();//get('image_prod')->getData();
+            $brochureFile = $form->get('image')->getData(); //get('image_prod')->getData();
 
             foreach ($brochureFile as $image) {
-                $file=new File($image->getPath());
-                $newFilename = md5(uniqid()).'.'. $file->guessExtension();
-               // $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $file = new File($image->getPath());
+                $newFilename = md5(uniqid()) . '.' . $file->guessExtension();
+                // $fileName = md5(uniqid()).'.'.$file->guessExtension();
                 $file->move($this->getParameter('images_directory'), $newFilename);
                 $image->setPath($newFilename);
             }
 
-            $em=$this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($produit);
             $em->flush();
 
@@ -76,26 +75,27 @@ class ProduitController extends AbstractController
     /**
      * @Route("/editer/{id}", name="produit_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request,$id){
+    public function edit(Request $request, $id)
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         $produit = $entityManager->getRepository(Produit::class)->find($id);
-        $form = $this->createForm(CategorieType::class, $produit);
+        $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
-            $brochureFile = $form->get('image')->getData();//get('image_prod')->getData();
+            $brochureFile = $form->get('image')->getData(); //get('image_prod')->getData();
 
             foreach ($brochureFile as $image) {
-                $file=new File($image->getPath());
-                $newFilename = md5(uniqid()).'.'. $file->guessExtension();
+                $file = new File($image->getPath());
+                $newFilename = md5(uniqid()) . '.' . $file->guessExtension();
                 // $fileName = md5(uniqid()).'.'.$file->guessExtension();
                 $file->move($this->getParameter('images_directory'), $newFilename);
                 $image->setPath($newFilename);
             }
 
-            $em=$this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($produit);
             $em->flush();
 
@@ -107,5 +107,18 @@ class ProduitController extends AbstractController
         return $this->render("produit/edit.html.twig", [
             "form" => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="produit_delete", methods={"DELETE"})
+     */
+    public function deleteComment(Request $request, Categorie $categorie): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($categorie);
+            $entityManager->flush();
+            return $this->redirectToRoute('admin_dashboard');
+        }
     }
 }

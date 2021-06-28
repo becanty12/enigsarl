@@ -15,13 +15,14 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('path',FileType::class,array('label'=>'insert image', "label"=> false,
+            ->add('path', FileType::class, array(
+                'label' => 'insert image', "label" => false,
                 'required' => false,
                 'data_class' => null,
-                ))
-            ->add('titre',\Symfony\Component\Form\Extension\Core\Type\TextType::class,[ "label"=> false,])
-            ->add('description',TextareaType::class,[ "label"=> false,])
-        ;
+                'mapped' => false,
+            ))
+            ->add('titre', \Symfony\Component\Form\Extension\Core\Type\TextType::class, ["label" => false,])
+            ->add('description', TextareaType::class, ["label" => false,]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -8,7 +8,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-7 col-12">
-                    {{ form_start(form, {'attr': {'role':'form', 'class': 'form'}}) }}
+                    {{ form_start(form, {'attr': {'role':'form','id':'formulaire', 'class': 'form'}}) }}
                         <div class="text-start mb-30">
                             <h2>ENIG</h2>
                             <h3>Faites nous connaitre vos préocupations et nous vous apporterons une solution dans un délai très court et très rapidement.</h3>
@@ -17,7 +17,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                    {# <input type="text" class="form-control" placeholder="Entrez votre nom svp">#}
-                                    {{ form_widget(form.nom,{'attr':{'class':'form-control','id':'userinput2','placeholder':'Entrez votre nom svp','required':'required'}}) }}
+                                    {{ form_widget(form.nom,{'attr':{'class':'form-control','id':'nom','placeholder':'Entrez votre nom svp','required':'required'}}) }}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <button name="submit" type="submit" value="Submit" class="btn btn-primary"> Envoyer</button>
+                                <button name="submit" id="submit" type="submit" value="Submit" class="btn btn-primary"> Envoyer</button>
                             </div>
                         </div>
                     {{ form_end(form) }}
@@ -65,4 +65,13 @@
             </div>
         </div>
     </section>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+        });
+    </script>
 {% endblock %}

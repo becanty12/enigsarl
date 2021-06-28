@@ -35,7 +35,7 @@ class DefaultController extends AbstractController
 
 
     /**
-     * @Route("/acceuil", name="default")
+     * @Route("/", name="default")
      */
     public function index(CategorieRepository $categorieRepository): Response
     {

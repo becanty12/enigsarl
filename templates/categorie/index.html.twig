@@ -32,8 +32,10 @@
             <td>{{ categorie.status }}</td>
             <td width="100">
                 <a class="btn btn-success btn-sm" href="{{ path('categorie_edit',{'id':categorie.id}) }}" data-bs-toggle="tooltip" data-original-title="View" data-bs-original-title="" title=""><i class="fa fa-pencil"></i></a>
-                <a class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-original-title="Delete" data-bs-original-title="" title=""><i class="fa fa-eye"></i></a>
+               <a class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-original-title="Delete"  onclick="if (!confirm('Voulez vous supprimer ?')) { return false }" href="{{ path('categorie_delete',{'id':categorie.id }) }}"><i class="fa fa-eye"></i> </a>
             </td>
+             <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.id) }}">
         </tr>
         {% else %}
         <tr>

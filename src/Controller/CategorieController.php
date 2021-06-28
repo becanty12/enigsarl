@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Categorie;
 use App\Form\CategorieType;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,10 +23,10 @@ class CategorieController extends AbstractController
      */
     public function index(): Response
     {
-        $listecategorie=$this->getDoctrine()->getRepository(Categorie::class)->findAll();
+        $listecategorie = $this->getDoctrine()->getRepository(Categorie::class)->findAll();
         return $this->render('categorie/index.html.twig', [
             'titre' => 'Liste des catégories',
-            'listecategories'=>$listecategorie
+            'listecategories' => $listecategorie
         ]);
     }
 
@@ -38,11 +39,11 @@ class CategorieController extends AbstractController
         $form = $this->createForm(CategorieType::class, $categorie);
         $form->handleRequest($request);
 
-      // dd($form->get('image')->getData());
+        // dd($form->get('image')->getData());
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
-            $brochureFile = $form->get('image')->getData();//get('image_prod')->getData();
-            $newFilename = md5(uniqid()).'.'.$brochureFile->guessExtension();
+            $brochureFile = $form->get('image')->getData(); //get('image_prod')->getData();
+            $newFilename = md5(uniqid()) . '.' . $brochureFile->guessExtension();
             $brochureFile->move(
                 $this->getParameter('images_directory'),
                 $newFilename
@@ -50,7 +51,7 @@ class CategorieController extends AbstractController
 
             $categorie->setImage($newFilename);
             //$post->setTitle("premier test");
-            $em=$this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($categorie);
             $em->flush();
 
@@ -68,28 +69,29 @@ class CategorieController extends AbstractController
     /**
      * @Route("/editer/{id}", name="categorie_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request,$id){
-        $entityManager = $this->getDoctrine()->getManager();
+    public function edit(Categorie $categorie, Request $request, $id, EntityManagerInterface $em)
+    {
 
-        $categorie = $entityManager->getRepository(Categorie::class)->find($id);
+
+
         $form = $this->createForm(CategorieType::class, $categorie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
-            $brochureFile = $form->get('image')->getData();//get('image_prod')->getData();
-            $newFilename = md5(uniqid()).'.'.$brochureFile->guessExtension();
-            $brochureFile->move(
-                $this->getParameter('images_directory'),
-                $newFilename
-            );
+            $brochureFile = $form->get('imageFile')->getData();
+            if ($brochureFile) {
+                $newFilename = md5(uniqid()) . '.' . $brochureFile->guessExtension();
+                $brochureFile->move(
+                    $this->getParameter('images_directory'),
+                    $newFilename
+                );
+                $categorie->setImage($newFilename);
+            }
 
-            $categorie->setImage($newFilename);
-            //$post->setTitle("premier test");
-            $em=$this->getDoctrine()->getManager();
             $em->persist($categorie);
             $em->flush();
-
+            $this->addFlash('success', 'Article Updated! Inaccuracies squashed!');
 
             return $this->redirectToRoute('admin_dashboard');
         }
@@ -97,5 +99,17 @@ class CategorieController extends AbstractController
         return $this->render("categorie/edit.html.twig", [
             "form" => $form->createView(),
         ]);
+    }
+    /**
+     * @Route("/delete/{id}", name="categorie_delete", methods={"DELETE"})
+     */
+    public function deleteComment(Request $request, Categorie $categorie): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($categorie);
+            $entityManager->flush();
+            return $this->redirectToRoute('admin_dashboard');
+        }
     }
 }

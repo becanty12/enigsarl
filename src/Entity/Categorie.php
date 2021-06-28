@@ -32,8 +32,6 @@ class Categorie
 
     /**
      * @var String
-     * @Assert\NotBlank(message="stp entre une image")
-     * @Assert\Image()
      * @ORM\Column(name="image",type="string", length=255)
      */
     private $image;
@@ -82,9 +80,9 @@ class Categorie
 
     public function getProduitAll()
     {
-         $rest = [];
+        $rest = [];
         foreach ($this->getProduits() as $produit) {
-                $rest  = $produit->getLibelle();
+            $rest  = $produit->getLibelle();
         }
         return $rest;
     }
@@ -146,8 +144,4 @@ class Categorie
 
         return $this;
     }
-
-   
-
-
 }

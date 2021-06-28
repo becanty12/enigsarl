@@ -28,7 +28,8 @@
             <td>{{ produit.date_ajout | date("m/d/Y") }}</td>
             <td width="100">
                 <a class="btn btn-success btn-sm" href="{{ path('produit_edit',{'id':produit.id}) }}" data-bs-toggle="tooltip" data-original-title="View" data-bs-original-title="" title=""><i class="fa fa-pencil"></i></a>
-                <a class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-original-title="Delete" data-bs-original-title="" title=""><i class="fa fa-eye"></i></a>
+                 <a class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-original-title="Delete"  onclick="if (!confirm('Voulez vous supprimer ?')) { return false }" href="{{ path('produit_delete',{'id':produit.id }) }}"><i class="fa fa-eye"></i> </a>
+                
             </td>
         </tr>
         {% else %}
