@@ -48,7 +48,6 @@ class ProduitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
             $brochureFile = $form->get('image')->getData(); //get('image_prod')->getData();
-
             foreach ($brochureFile as $image) {
                 $file = new File($image->getPath());
                 $newFilename = md5(uniqid()) . '.' . $file->guessExtension();
@@ -56,7 +55,6 @@ class ProduitController extends AbstractController
                 $file->move($this->getParameter('images_directory'), $newFilename);
                 $image->setPath($newFilename);
             }
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($produit);
             $em->flush();
